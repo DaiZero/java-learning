@@ -11,6 +11,7 @@ public class ThreadLocalTest {
     }
 
     public static List<String> clear() {
+        System.out.println("before size: " + holder.get().messages.size());
         List<String> messages = holder.get().messages;
         holder.remove();
 
@@ -21,6 +22,8 @@ public class ThreadLocalTest {
     public static void main(String[] args) {
         ThreadLocalTest.add("一枝花算不算浪漫");
         System.out.println(holder.get().messages);
-        ThreadLocalTest.clear();
+
+        new Thread(() -> System.out.println("子线程获取父类`ThreadLocal`数据：" + holder.get().messages)).start();
+//        ThreadLocalTest.clear();
     }
 }
