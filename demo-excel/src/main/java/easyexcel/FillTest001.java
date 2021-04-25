@@ -1,22 +1,16 @@
 package easyexcel;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.write.merge.AbstractMergeStrategy;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.sun.javafx.collections.MappingChange;
 import easyexcel.dao.ProjectPayment;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
-
-
 import java.util.stream.Collectors;
 
 /**
@@ -93,27 +87,27 @@ public class FillTest001 {
 
     static class MyMergeStrategy extends AbstractMergeStrategy {
 
-        private List<Object> fruitList;
-        private List<Integer> fruitGroupCount;
+        private final List<Object> dataList;
+        private final List<Integer> dataGroupCount;
         private Sheet sheet;
 
-        public MyMergeStrategy(List<Object> fruitList, List<Integer> fruitGroupCount) {
-            this.fruitList = fruitList;
-            this.fruitGroupCount = fruitGroupCount;
+        public MyMergeStrategy(List<Object> dataList, List<Integer> dataGroupCount) {
+            this.dataList = dataList;
+            this.dataGroupCount = dataGroupCount;
         }
 
         // 将该列全部合并成一个单元格
         private void mergeCommonColumn(Integer index) {
-            CellRangeAddress cellRangeAddress = new CellRangeAddress(1, fruitList.size(), index, index);
+            CellRangeAddress cellRangeAddress = new CellRangeAddress(1, dataList.size(), index, index);
             sheet.addMergedRegionUnsafe(cellRangeAddress);
         }
 
         // 按照分组将各种类别分别合并成一个单元格
         private void mergeGroupColumn(Integer index) {
-            Integer rowCnt = 1;
-            for (Integer count : fruitGroupCount) {
-                int lastCnt=rowCnt + count - 1;
-                if(lastCnt>rowCnt){
+            int rowCnt = 1;
+            for (Integer count : dataGroupCount) {
+                int lastCnt = rowCnt + count - 1;
+                if (lastCnt > rowCnt) {
                     CellRangeAddress cellRangeAddress = new CellRangeAddress(rowCnt, rowCnt + count - 1, index, index);
                     sheet.addMergedRegionUnsafe(cellRangeAddress);
                 }
