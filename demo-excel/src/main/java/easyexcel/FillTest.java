@@ -23,7 +23,8 @@ public class FillTest {
     private static void export001() throws Exception {
         List list = createData();
         // 数据分组
-        Object collect = list.stream().collect(Collectors.groupingBy(ProjectPayment::getProjectManager, Collectors.counting()));
+        Object collect = list.stream()
+                .collect(Collectors.groupingBy(ProjectPayment::getProjectManager, Collectors.counting()));
         HashMap<String, Long> hashMap;
         if (collect instanceof HashMap) {
             hashMap = (HashMap<String, Long>) collect;
@@ -34,12 +35,14 @@ public class FillTest {
         hashMap.forEach((k, v) -> {
             gl.add(Integer.valueOf(v.toString()));
         });
-        System.out.println(collect);
         // 填充数据
         String templateFileName = ClassLoader.getSystemResource("template/FillTest001.xlsx").getPath();
         String fileName = "D:/temp/" + "listFill" + System.currentTimeMillis() + ".xlsx";
         MyMergeStrategy myMergeStrategy = new MyMergeStrategy(list, gl);
-        EasyExcel.write(fileName).withTemplate(templateFileName).registerWriteHandler(myMergeStrategy).sheet().doFill(list);
+        EasyExcel.write(fileName)
+                .withTemplate(templateFileName)
+                .registerWriteHandler(myMergeStrategy)
+                .sheet().doFill(list);
     }
 
     private static List<ProjectPayment> createData() {
@@ -53,7 +56,11 @@ public class FillTest {
                 String accName = "客户名称00" + k;
                 String cNo = "合同编号00" + k;
                 ProjectPayment projectPayment1 = new ProjectPayment(pm, am, accName, cNo, "产品",
-                        BigDecimal.valueOf(10000), BigDecimal.valueOf(10000), BigDecimal.valueOf(11000), BigDecimal.valueOf(10002), BigDecimal.valueOf(50000));
+                        BigDecimal.valueOf(10000),
+                        BigDecimal.valueOf(10000),
+                        BigDecimal.valueOf(11000),
+                        BigDecimal.valueOf(10002),
+                        BigDecimal.valueOf(50000));
                 list.add(projectPayment1);
             }
         }
