@@ -1,3 +1,5 @@
+package threadlocal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,6 @@ public class ThreadLocalTest {
         System.out.println(holder.get().messages);
 
         new Thread(() -> System.out.println("子线程获取父类`ThreadLocal`数据：" + holder.get().messages)).start();
-//        ThreadLocalTest.clear();
+//        threadlocal.ThreadLocalTest.clear();
     }
 }
